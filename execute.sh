@@ -152,7 +152,7 @@ if [ -n "${DRA_TEST_TOOL_SELECT}" ] && [ "${DRA_TEST_TOOL_SELECT}" != "none" ] &
 #            criteria="{ \"name\": \"$name\", \"conditions\": [ { \"eval\": \"_karmaMochaTestSuccessPercentage\", \"op\": \">=\", \"value\": ${DRA_MINIMUM_SUCCESS_RATE} } ] }"
 #        fi
         
-        echo "criteria:  $criteria"
+        #echo "criteria:  $criteria"
         criteriaList=("${criteriaList[@]}" "$criteria")
     fi
 
@@ -164,7 +164,7 @@ if [ -n "${DRA_TEST_TOOL_SELECT}" ] && [ "${DRA_TEST_TOOL_SELECT}" != "none" ] &
             criteria="{ \"name\": \"$name\", \"conditions\": [ { \"eval\": \"_hasKarmaMochaTestRegressed\", \"op\": \"=\", \"value\": false, \"forEventType\": \"${DRA_TEST_TOOL_SELECT}FunctionalTest\" } ] }"
         fi
         
-        echo "criteria:  $criteria"
+        #echo "criteria:  $criteria"
         criteriaList=("${criteriaList[@]}" "$criteria")
     fi
     
@@ -172,7 +172,7 @@ if [ -n "${DRA_TEST_TOOL_SELECT}" ] && [ "${DRA_TEST_TOOL_SELECT}" != "none" ] &
         name="No critical functional test failures (${DRA_TEST_TOOL_SELECT})"
         criteria="{ \"name\": \"$name\", \"conditions\": [ { \"eval\": \"_hasMochaCriticalTestsPassed(${DRA_CRITICAL_TESTCASES})\", \"op\": \"=\", \"value\": true, \"forEventType\": \"${DRA_TEST_TOOL_SELECT}FunctionalTest\" } ] }"
         
-        echo "criteria:  $criteria"
+        #echo "criteria:  $criteria"
         criteriaList=("${criteriaList[@]}" "$criteria")
     fi
 fi
@@ -185,7 +185,7 @@ fi
 
 
 
-echo ${criteriaList[@]}
+#echo ${criteriaList[@]}
 
 criteria="{ \"name\": \"DynamicCriteria\", \"revision\": 2, \"project\": \"key\", \"mode\": \"decision\", \"rules\": [ "
 
