@@ -1,5 +1,5 @@
 {
-    "id": "ibm.devops.services.pipeline.dra_ut_decision_gate",
+    "id": "ibm.devops.services.pipeline.dra_fvt_decision_gate",
     "version": 1,
     "name_key": "ExtName",
     "desc_key": "ExtDesc",
@@ -71,60 +71,6 @@
         
         
         {
-            "name": "COVERAGE_TOOL_SELECT",
-            "type": "Select",
-            "required": "false",
-            "default_value": "none",
-            "label_key": "COVERAGE_TOOL_SELECT_KEY",
-            "desc_key": "COVERAGE_TOOL_SELECT_DESC",
-            "options": [
-                {
-                    "label_key": "COVERAGE_TOOL_OPTION_1_KEY",
-                    "value": "none"
-                },
-                {
-                    "label_key": "COVERAGE_TOOL_OPTION_2_KEY",
-                    "value": "blanket"
-                },
-                { 
-                    "label_key": "COVERAGE_TOOL_OPTION_3_KEY",
-                    "value": "istanbul" 
-                }
-            ]
-        },
-        {
-            "name": "COVERAGE_LOG_FILE",
-            "type": "Text",
-            "required": "false",
-            "default_value": "",
-            "label_key": "COVERAGE_LOG_FILE_KEY",
-            "desc_key": "COVERAGE_LOG_FILE_DESC"
-        },
-        {
-            "name": "MINIMUM_COVERAGE_RATE",
-            "type": "Text",
-            "required": "false",
-            "default_value": " ",
-            "label_key": "MINIMUM_COVERAGE_RATE_KEY",
-            "desc_key": "MINIMUM_COVERAGE_RATE_DESC"
-        },
-        {
-            "name": "CHECK_COVERAGE_REGRESSION",
-            "type": "Checkbox",
-            "required": "false",
-            "default_value": "false",
-            "label_key": "CHECK_COVERAGE_REGRESSION_KEY",
-            "desc_key": "CHECK_COVERAGE_REGRESSION_DESC"
-        },
-        {
-            "name": "COVERAGE_REGRESSION_THRESHOLD",
-            "type": "Text",
-            "required": "false",
-            "default_value": " ",
-            "label_key": "COVERAGE_REGRESSION_THRESHOLD_KEY",
-            "desc_key": "COVERAGE_REGRESSION_THRESHOLD_DESC"
-        },
-        {
             "name": "CRITICAL_TESTCASES",
             "type": "Text",
             "required": "false",
@@ -159,11 +105,6 @@ export DRA_TEST_LOG_FILE=#TEST_LOG_FILE#
 export DRA_MINIMUM_SUCCESS_RATE=#MINIMUM_SUCCESS_RATE#
 export DRA_CHECK_TEST_REGRESSION=#CHECK_TEST_REGRESSION#
         
-export DRA_COVERAGE_TOOL_SELECT=#COVERAGE_TOOL_SELECT#
-export DRA_COVERAGE_LOG_FILE=#COVERAGE_LOG_FILE#
-export DRA_MINIMUM_COVERAGE_RATE=\"#MINIMUM_COVERAGE_RATE#\"
-export DRA_CHECK_COVERAGE_REGRESSION=#CHECK_COVERAGE_REGRESSION#
-export DRA_COVERAGE_REGRESSION_THRESHOLD=#COVERAGE_REGRESSION_THRESHOLD#
 export DRA_CRITICAL_TESTCASES=\"#CRITICAL_TESTCASES#\"
 
         
