@@ -37,10 +37,6 @@
                 {
                     "label_key": "TEST_TOOL_OPTION_2_KEY",
                     "value": "mocha"
-                },
-                { 
-                    "label_key": "TEST_TOOL_OPTION_3_KEY",
-                    "value": "mochaKarma" 
                 }
             ]
         },
