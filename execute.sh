@@ -170,7 +170,7 @@ if [ -n "${DRA_TEST_TOOL_SELECT}" ] && [ "${DRA_TEST_TOOL_SELECT}" != "none" ] &
     
     if [ -n "${DRA_CRITICAL_TESTCASES}" ] && [ "${DRA_CRITICAL_TESTCASES}" != " " ]; then
         name="No critical functional test failures (${DRA_TEST_TOOL_SELECT})"
-        criteria="{ \"name\": \"$name\", \"conditions\": [ { \"eval\": \"_hasSaucelabCriticalTestPassed(${DRA_CRITICAL_TESTCASES})\", \"op\": \"=\", \"value\": true } ] }"
+        criteria="{ \"name\": \"$name\", \"conditions\": [ { \"eval\": \"_hasMochaCriticalTestsPassed(${DRA_CRITICAL_TESTCASES})\", \"op\": \"=\", \"value\": true } ] }"
         
         echo "criteria:  $criteria"
         criteriaList=("${criteriaList[@]}" "$criteria")
