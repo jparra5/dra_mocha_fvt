@@ -185,23 +185,23 @@ fi
 
 
 
-#echo ${criteriaList[@]}
+if [ ${#criteriaList[@]} -gt 0 ]; then
+    criteria="{ \"name\": \"DynamicCriteria\", \"revision\": 2, \"project\": \"key\", \"mode\": \"decision\", \"rules\": [ "
 
-criteria="{ \"name\": \"DynamicCriteria\", \"revision\": 2, \"project\": \"key\", \"mode\": \"decision\", \"rules\": [ "
-
-for i in "${criteriaList[@]}"
-do
-	criteria="$criteria $i,"
-done
-
-
-criteria="${criteria%?}"
-criteria="$criteria ] }"
+    for i in "${criteriaList[@]}"
+    do
+        criteria="$criteria $i,"
+    done
 
 
-echo $criteria > dynamicCriteria.json
+    criteria="${criteria%?}"
+    criteria="$criteria ] }"
 
 
-cat dynamicCriteria.json
+    echo $criteria > dynamicCriteria.json
 
-grunt --gruntfile=node_modules/grunt-idra/idra.js -decision=dynamic -criteriafile=dynamicCriteria.json 
+
+    cat dynamicCriteria.json
+
+    grunt --gruntfile=node_modules/grunt-idra/idra.js -decision=dynamic -criteriafile=dynamicCriteria.json 
+fi
