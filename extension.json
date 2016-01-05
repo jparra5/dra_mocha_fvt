@@ -1,5 +1,5 @@
 {
-    "id": "ibm.devops.services.pipeline.dra_fvt_decision_gate",
+    "id": "ibm.devops.services.pipeline.dra_mocha_fvt",
     "version": 1,
     "name_key": "ExtName",
     "desc_key": "ExtDesc",
@@ -7,12 +7,12 @@
     "message_key": "ExtMessage",
     "params": [
         {
-            "name": "PROJECT_KEY",
+            "name": "TOOLCHAIN_ID",
             "type": "Secure",
             "required": "true",
             "default_value": "",
-            "label_key": "PROJECT_KEY_KEY",
-            "desc_key": "PROJECT_KEY_DESC"
+            "label_key": "TOOLCHAIN_ID_KEY",
+            "desc_key": "TOOLCHAIN_ID_DESC"
         },
         {
             "name": "COMMAND",
@@ -94,7 +94,8 @@ set +e
 
         
 
-export DRA_PROJECT_KEY=#PROJECT_KEY#
+export IDS_TOOLCHAIN_ID=#TOOLCHAIN_ID#
+export DRA_PROJECT_KEY=#TOOLCHAIN_ID#
         
 export DRA_TEST_TOOL_SELECT=#TEST_TOOL_SELECT#
 export DRA_TEST_LOG_FILE=#TEST_LOG_FILE#
