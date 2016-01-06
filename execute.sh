@@ -121,6 +121,7 @@ function criteria_for_ut {
 
 
 
+echo "IDS_TOOLCHAIN_ID: ${IDS_TOOLCHAIN_ID}"
 echo "DRA_PROJECT_KEY: ${DRA_PROJECT_KEY}"
 
 echo "DRA_TEST_TOOL_SELECT: ${DRA_TEST_TOOL_SELECT}"
