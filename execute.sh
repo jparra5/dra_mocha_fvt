@@ -35,7 +35,7 @@ set +x
 
 npm install grunt
 npm install grunt-cli
-npm install grunt-idra
+npm install grunt-idra2
 
 
 
@@ -204,5 +204,5 @@ if [ ${#criteriaList[@]} -gt 0 ]; then
 
     cat dynamicCriteria.json
 
-    grunt --gruntfile=node_modules/grunt-idra/idra.js -decision=dynamic -criteriafile=dynamicCriteria.json 
+    grunt --gruntfile=node_modules/grunt-idra2/idra.js -decision=dynamic -criteriafile=dynamicCriteria.json 
 fi
