@@ -45,47 +45,7 @@ function dra_commands {
     if [ -n "$1" ] && [ "$1" != " " ]; then
         echo "Event: '$1' is defined and not empty"
         
-        dra_grunt_command="grunt --gruntfile=node_modules/grunt-idra/idra.js -eventType=$1"
-        
-        echo -e "\tdra_grunt_command: $dra_grunt_command"
-        
-        if [ -n "$2" ] && [ "$2" != " " ]; then
-            echo -e "\tFile: '$2' is defined and not empty"
-            
-            dra_grunt_command="$dra_grunt_command -file=$2"
-        
-            echo -e "\t\tdra_grunt_command: $dra_grunt_command"
-            
-        else
-            echo -e "\tFile: '$2' is not defined or is empty"
-        fi
-        #if [ -n "$3" ] && [ "$3" != " " ]; then
-        #    echo -e "\tServer: '$3' is defined and not empty"
-        #
-        #    dra_grunt_command="$dra_grunt_command -deployAnalyticsServer=$3"
-        #
-        #    echo -e "\t\tdra_grunt_command: $dra_grunt_command"
-        #
-        #else
-        #    echo -e "\tServer: '$3' is not defined or is empty"
-        #fi
-        
-        echo -e "\tFINAL dra_grunt_command: $dra_grunt_command"
-        echo ""
-        
-        eval $dra_grunt_command
-    else
-        echo "Event: '$1' is not defined or is empty"
-    fi
-}
-
-function criteria_for_ut {
-    dra_grunt_command=""
-    
-    if [ -n "$1" ] && [ "$1" != " " ]; then
-        echo "Event: '$1' is defined and not empty"
-        
-        dra_grunt_command="grunt --gruntfile=node_modules/grunt-idra/idra.js -eventType=$1"
+        dra_grunt_command="grunt --gruntfile=node_modules/grunt-idra2/idra.js -eventType=$1"
         
         echo -e "\tdra_grunt_command: $dra_grunt_command"
         
