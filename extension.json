@@ -5,6 +5,17 @@
     "desc_key": "ExtDesc",
     "extension_type": "Test",
     "message_key": "ExtMessage",
+    "inputs": [
+        {
+            "type": "Artifacts",
+            "inclusion" : "always"
+        },
+        {
+            "type": "Bluemix",
+            "inclusion" : "always",
+            "regions": ["ibm:ys1:us-south", "ibm:yp:us-south"]
+        }
+    ],
     "params": [
         {
             "name": "TOOLCHAIN_ID",
