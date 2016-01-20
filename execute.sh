@@ -77,7 +77,7 @@ function dra_commands {
         
         eval $dra_grunt_command
     else
-        echo "Event: '$1' is not defined or is empty"
+        #echo "Event: '$1' is not defined or is empty"
     fi
     
     echo -e "${no_color}"
