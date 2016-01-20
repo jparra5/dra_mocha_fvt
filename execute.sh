@@ -40,6 +40,7 @@ npm install grunt-idra2
 
 
 function dra_commands {
+    echo -e "${no_color}"
     dra_grunt_command=""
     
     if [ -n "$1" ] && [ "$1" != " " ]; then
@@ -78,6 +79,8 @@ function dra_commands {
     else
         echo "Event: '$1' is not defined or is empty"
     fi
+    
+    echo -e "${no_color}"
 }
 
 
@@ -117,9 +120,7 @@ if [ $RESULT -eq 0 ]; then
     if [ -n "${DRA_TEST_TOOL_SELECT}" ] && [ "${DRA_TEST_TOOL_SELECT}" != "none" ] && \
         [ -n "${DRA_TEST_LOG_FILE}" ] && [ "${DRA_TEST_LOG_FILE}" != " " ]; then
 
-        echo -e "${no_color}"
         dra_commands "${DRA_TEST_TOOL_SELECT}FunctionalTest" "${DRA_TEST_LOG_FILE}"
-        echo -e "${no_color}"
 
         if [ -n "${DRA_MINIMUM_SUCCESS_RATE}" ] && [ "${DRA_MINIMUM_SUCCESS_RATE}" != " " ]; then
             name="At least ${DRA_MINIMUM_SUCCESS_RATE}% success in functional tests (${DRA_TEST_TOOL_SELECT})"
