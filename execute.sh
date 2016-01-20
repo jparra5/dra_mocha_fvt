@@ -43,21 +43,22 @@ function dra_commands {
     dra_grunt_command=""
     
     if [ -n "$1" ] && [ "$1" != " " ]; then
-        echo "Event: '$1' is defined and not empty"
+        #echo "Event: '$1' is defined and not empty"
         
         dra_grunt_command="grunt --gruntfile=node_modules/grunt-idra2/idra.js -eventType=$1"
         
-        echo -e "\tdra_grunt_command: $dra_grunt_command"
+        #echo -e "\tdra_grunt_command: $dra_grunt_command"
         
         if [ -n "$2" ] && [ "$2" != " " ]; then
-            echo -e "\tFile: '$2' is defined and not empty"
+            #echo -e "\tFile: '$2' is defined and not empty"
             
             dra_grunt_command="$dra_grunt_command -file=$2"
         
-            echo -e "\t\tdra_grunt_command: $dra_grunt_command"
+            #echo -e "\t\tdra_grunt_command: $dra_grunt_command"
             
         else
-            echo -e "\tFile: '$2' is not defined or is empty"
+            echo -e "File: '$2' is not defined or is empty"
+            echo -e "${no_color}"
         fi
         #if [ -n "$3" ] && [ "$3" != " " ]; then
         #    echo -e "\tServer: '$3' is defined and not empty"
@@ -70,8 +71,8 @@ function dra_commands {
         #    echo -e "\tServer: '$3' is not defined or is empty"
         #fi
         
-        echo -e "\tFINAL dra_grunt_command: $dra_grunt_command"
-        echo ""
+        echo -e "FINAL dra_grunt_command: $dra_grunt_command"
+        echo -e "${no_color}"
         
         eval $dra_grunt_command
     else
@@ -80,20 +81,21 @@ function dra_commands {
 }
 
 
-
+echo -e "${no_color}"
 echo "DRA_TEST_TOOL_SELECT: ${DRA_TEST_TOOL_SELECT}"
 echo "DRA_TEST_LOG_FILE: ${DRA_TEST_LOG_FILE}"
 echo "DRA_MINIMUM_SUCCESS_RATE: ${DRA_MINIMUM_SUCCESS_RATE}"
 echo "DRA_CHECK_TEST_REGRESSION: ${DRA_CHECK_TEST_REGRESSION}"
 
 echo "DRA_CRITICAL_TESTCASES: ${DRA_CRITICAL_TESTCASES}"
+echo -e "${no_color}"
 
 
 export CF_TOKEN=$(sed -e 's/^.*"AccessToken":"\([^"]*\)".*$/\1/' ~/.cf/config.json)
 
 custom_cmd
 
-
+echo -e "${no_color}"
 
 
 
@@ -115,7 +117,9 @@ if [ $RESULT -eq 0 ]; then
     if [ -n "${DRA_TEST_TOOL_SELECT}" ] && [ "${DRA_TEST_TOOL_SELECT}" != "none" ] && \
         [ -n "${DRA_TEST_LOG_FILE}" ] && [ "${DRA_TEST_LOG_FILE}" != " " ]; then
 
+        echo -e "${no_color}"
         dra_commands "${DRA_TEST_TOOL_SELECT}FunctionalTest" "${DRA_TEST_LOG_FILE}"
+        echo -e "${no_color}"
 
         if [ -n "${DRA_MINIMUM_SUCCESS_RATE}" ] && [ "${DRA_MINIMUM_SUCCESS_RATE}" != " " ]; then
             name="At least ${DRA_MINIMUM_SUCCESS_RATE}% success in functional tests (${DRA_TEST_TOOL_SELECT})"
@@ -173,10 +177,12 @@ if [ $RESULT -eq 0 ]; then
 
         echo $criteria > dynamicCriteria.json
 
-
+        echo "Dynamic Criteria:"
         cat dynamicCriteria.json
 
+        echo -e "${no_color}"
         grunt --gruntfile=node_modules/grunt-idra2/idra.js -decision=dynamic -criteriafile=dynamicCriteria.json 
+        echo -e "${no_color}"
     fi
 else
     echo "DRA is not present";
