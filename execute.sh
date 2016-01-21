@@ -76,7 +76,7 @@ function dra_commands {
         #echo -e "${no_color}"
         
         eval $dra_grunt_command
-        GRUNT_RESULT=?
+        GRUNT_RESULT=$?
         
         if [ $GRUNT_RESULT -ne 0 ]; then
             exit 1
