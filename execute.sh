@@ -183,7 +183,10 @@ if [ $RESULT -eq 0 ]; then
 
         echo -e "${no_color}"
         grunt --gruntfile=node_modules/grunt-idra2/idra.js -decision=dynamic -criteriafile=dynamicCriteria.json 
+        DECISION_RESULT=$?
         echo -e "${no_color}"
+        
+        return $DECISION_RESULT
     fi
 #else
     #echo "DRA is not present";
