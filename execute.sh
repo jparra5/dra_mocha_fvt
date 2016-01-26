@@ -44,22 +44,22 @@ function dra_commands {
     dra_grunt_command=""
     
     if [ -n "$1" ] && [ "$1" != " " ]; then
-        #echo "Event: '$1' is defined and not empty"
+        debugme echo "Event: '$1' is defined and not empty"
         
         dra_grunt_command="grunt --gruntfile=node_modules/grunt-idra2/idra.js -eventType=$1"
         
-        #echo -e "\tdra_grunt_command: $dra_grunt_command"
+        debugme echo -e "\tdra_grunt_command: $dra_grunt_command"
         
         if [ -n "$2" ] && [ "$2" != " " ]; then
-            #echo -e "\tFile: '$2' is defined and not empty"
+            debugme echo -e "\tFile: '$2' is defined and not empty"
             
             dra_grunt_command="$dra_grunt_command -file=$2"
         
-            #echo -e "\t\tdra_grunt_command: $dra_grunt_command"
+            debugme echo -e "\t\tdra_grunt_command: $dra_grunt_command"
             
-        #else
-            #echo -e "File: '$2' is not defined or is empty"
-            #echo -e "${no_color}"
+        else
+            debugme echo -e "File: '$2' is not defined or is empty"
+            debugme echo -e "${no_color}"
         fi
         #if [ -n "$3" ] && [ "$3" != " " ]; then
         #    echo -e "\tServer: '$3' is defined and not empty"
@@ -72,31 +72,27 @@ function dra_commands {
         #    echo -e "\tServer: '$3' is not defined or is empty"
         #fi
         
-        #echo -e "FINAL dra_grunt_command: $dra_grunt_command"
-        #echo -e "${no_color}"
+        debugme echo -e "FINAL dra_grunt_command: $dra_grunt_command"
+        debugme echo -e "${no_color}"
+        
         
         eval $dra_grunt_command
         GRUNT_RESULT=$?
         
-        if [ $GRUNT_RESULT -ne 0 ]; then
+        debugme echo "GRUNT_RESULT: $GRUNT_RESULT"
+        
+        if [ $GRUNT_RESULT -ne 0 ] && [ "${DRA_ADVISORY_MODE}" == "false" ]; then
             exit 1
         fi
-    #else
-        #echo "Event: '$1' is not defined or is empty"
+    else
+        debugme echo "Event: '$1' is not defined or is empty"
     fi
     
     echo -e "${no_color}"
 }
 
 
-#echo -e "${no_color}"
-#echo "DRA_TEST_TOOL_SELECT: ${DRA_TEST_TOOL_SELECT}"
-#echo "DRA_TEST_LOG_FILE: ${DRA_TEST_LOG_FILE}"
-#echo "DRA_MINIMUM_SUCCESS_RATE: ${DRA_MINIMUM_SUCCESS_RATE}"
-#echo "DRA_CHECK_TEST_REGRESSION: ${DRA_CHECK_TEST_REGRESSION}"
 
-#echo "DRA_CRITICAL_TESTCASES: ${DRA_CRITICAL_TESTCASES}"
-#echo -e "${no_color}"
 
 
 export CF_TOKEN=$(sed -e 's/^.*"AccessToken":"\([^"]*\)".*$/\1/' ~/.cf/config.json)
@@ -104,6 +100,15 @@ export CF_TOKEN=$(sed -e 's/^.*"AccessToken":"\([^"]*\)".*$/\1/' ~/.cf/config.js
 custom_cmd
 
 echo -e "${no_color}"
+
+debugme echo "DRA_ADVISORY_MODE: ${DRA_ADVISORY_MODE}"
+debugme echo "DRA_TEST_TOOL_SELECT: ${DRA_TEST_TOOL_SELECT}"
+debugme echo "DRA_TEST_LOG_FILE: ${DRA_TEST_LOG_FILE}"
+debugme echo "DRA_MINIMUM_SUCCESS_RATE: ${DRA_MINIMUM_SUCCESS_RATE}"
+debugme echo "DRA_CHECK_TEST_REGRESSION: ${DRA_CHECK_TEST_REGRESSION}"
+
+debugme echo "DRA_CRITICAL_TESTCASES: ${DRA_CRITICAL_TESTCASES}"
+debugme echo -e "${no_color}"
 
 
 
@@ -117,7 +122,7 @@ RESULT=$?
 #echo $RESULT
 
 if [ $RESULT -eq 0 ]; then
-    #echo "DRA is present";
+    debugme echo "DRA is present";
     
     criteriaList=()
 
@@ -169,7 +174,16 @@ if [ $RESULT -eq 0 ]; then
 
 
     if [ ${#criteriaList[@]} -gt 0 ]; then
-        criteria="{ \"name\": \"DynamicCriteria\", \"revision\": 2, \"project\": \"key\", \"mode\": \"decision\", \"rules\": [ "
+        
+        mode=""
+        
+        if [ "${DRA_ADVISORY_MODE}" == "false" ]; then
+            mode="decision"
+        else
+            mode="advisory"
+        fi
+        
+        criteria="{ \"name\": \"DynamicCriteria\", \"revision\": 2, \"project\": \"key\", \"mode\": \"$mode\", \"rules\": [ "
 
         for i in "${criteriaList[@]}"
         do
@@ -183,8 +197,8 @@ if [ $RESULT -eq 0 ]; then
 
         echo $criteria > dynamicCriteria.json
 
-        #echo "Dynamic Criteria:"
-        #cat dynamicCriteria.json
+        debugme echo "Dynamic Criteria:"
+        debugme cat dynamicCriteria.json
 
         echo -e "${no_color}"
         grunt --gruntfile=node_modules/grunt-idra2/idra.js -decision=dynamic -criteriafile=dynamicCriteria.json 
@@ -193,6 +207,6 @@ if [ $RESULT -eq 0 ]; then
         
         return $DECISION_RESULT
     fi
-#else
-    #echo "DRA is not present";
+else
+    debugme echo "DRA is not present";
 fi    
