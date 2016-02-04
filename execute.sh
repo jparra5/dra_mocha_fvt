@@ -95,7 +95,11 @@ function dra_commands {
 
 
 
-export CF_TOKEN=$(sed -e 's/^.*"AccessToken":"\([^"]*\)".*$/\1/' ~/.cf/config.json)
+if [ -z "$TOOLCHAIN_TOKEN" ]; then
+    export CF_TOKEN=$(sed -e 's/^.*"AccessToken":"\([^"]*\)".*$/\1/' ~/.cf/config.json)
+else
+    export CF_TOKEN=$TOOLCHAIN_TOKEN
+fi
 
 custom_cmd
 
@@ -117,10 +121,7 @@ OUTPUT_FILE='draserver.txt'
 ${EXT_DIR}/dra-check.py ${PIPELINE_TOOLCHAIN_ID} "${CF_TOKEN}" "${IDS_PROJECT_NAME}" "${OUTPUT_FILE}"
 RESULT=$?
 
-export DRA_SERVER=`cat ${OUTPUT_FILE}`
-rm ${OUTPUT_FILE}
 
-debugme echo "DRA_SERVER: ${DRA_SERVER}"
 
 #0 = DRA is present
 #1 = DRA not present or there was an error with the http call (err msg will show)
@@ -128,6 +129,12 @@ debugme echo "DRA_SERVER: ${DRA_SERVER}"
 
 if [ $RESULT -eq 0 ]; then
     debugme echo "DRA is present";
+    
+    export DRA_SERVER=`cat ${OUTPUT_FILE}`
+    rm ${OUTPUT_FILE}
+
+    debugme echo "DRA_SERVER: ${DRA_SERVER}"
+    
     
     criteriaList=()
 
