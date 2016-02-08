@@ -129,6 +129,9 @@ RESULT=$?
 
 if [ $RESULT -eq 0 ]; then
     debugme echo "DRA is present";
+    echo ""
+    echo "Deployment Risk Analytics (DRA) is active."
+    echo ""
     
     export DRA_SERVER=`cat ${OUTPUT_FILE}`
     rm ${OUTPUT_FILE}
