@@ -112,9 +112,9 @@ export DRA_CRITICAL_TESTCASES=\"#CRITICAL_TESTCASES#\"
         
 function custom_cmd {
     eval #COMMAND#
-    RESULT=$?
+    CMDRESULT=$?
 
-    if [ $RESULT -ne 0 ]; then
+    if [ $CMDRESULT -ne 0 ]; then
         exit 1
     fi
 }
