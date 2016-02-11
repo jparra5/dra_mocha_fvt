@@ -33,9 +33,7 @@ debugme() {
 set +e
 set +x 
 
-npm install grunt
-npm install grunt-cli
-npm install grunt-idra2
+
 
 
 
@@ -101,6 +99,41 @@ else
     export CF_TOKEN=$TOOLCHAIN_TOKEN
 fi
 
+
+OUTPUT_FILE='draserver.txt'
+${EXT_DIR}/dra-check.py ${PIPELINE_TOOLCHAIN_ID} "${CF_TOKEN}" "${IDS_PROJECT_NAME}" "${OUTPUT_FILE}"
+RESULT=$?
+
+#0 = DRA is present
+#1 = DRA not present or there was an error with the http call (err msg will show)
+#echo $RESULT
+
+if [ $RESULT -eq 0 ]; then
+    debugme echo "DRA is present";
+    
+    echo -e "${green}"
+    echo "**********************************************************************"
+    echo "Deployment Risk Analytics (DRA) is active."
+    echo "**********************************************************************"
+    echo -e "${no_color}"
+    
+    export DRA_SERVER=`cat ${OUTPUT_FILE}`
+    rm ${OUTPUT_FILE}
+
+    debugme echo "DRA_SERVER: ${DRA_SERVER}"
+fi
+
+
+
+
+
+
+
+npm install grunt
+npm install grunt-cli
+npm install grunt-idra2
+
+
 custom_cmd
 
 echo -e "${no_color}"
@@ -117,9 +150,6 @@ debugme echo -e "${no_color}"
 
 
 
-OUTPUT_FILE='draserver.txt'
-${EXT_DIR}/dra-check.py ${PIPELINE_TOOLCHAIN_ID} "${CF_TOKEN}" "${IDS_PROJECT_NAME}" "${OUTPUT_FILE}"
-RESULT=$?
 
 
 
@@ -129,14 +159,6 @@ RESULT=$?
 
 if [ $RESULT -eq 0 ]; then
     debugme echo "DRA is present";
-    echo ""
-    echo "Deployment Risk Analytics (DRA) is active."
-    echo ""
-    
-    export DRA_SERVER=`cat ${OUTPUT_FILE}`
-    rm ${OUTPUT_FILE}
-
-    debugme echo "DRA_SERVER: ${DRA_SERVER}"
     
     
     criteriaList=()
