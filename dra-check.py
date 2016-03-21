@@ -20,6 +20,7 @@ PROJECT_NAME = sys.argv[3]
 OUTPUT_FILE = sys.argv[4]
 DRA_SERVICE_NAME = 'draservicebroker'
 DRA_PRESENT = False
+ORGANIZATION_GUID = ''
 DRA_SERVER = ''
 
 
@@ -35,6 +36,9 @@ try:
             #print items[ 'name' ]
             if items[ 'name' ] == PROJECT_NAME:
                 #print items[ 'name' ]
+                #print items[ 'organization_guid' ]
+                ORGANIZATION_GUID = items[ 'organization_guid' ]
+                
                 for services in items[ 'services' ]:
                     #print services[ 'service_id' ]
                     if services[ 'service_id' ] == DRA_SERVICE_NAME:
@@ -59,6 +63,8 @@ except requests.exceptions.RequestException as e:
         
 if DRA_PRESENT:
     f = open(OUTPUT_FILE,'w')
+    f.write(ORGANIZATION_GUID)
+    f.write('\n')
     f.write(DRA_SERVER)
     f.close()
     exit(0)

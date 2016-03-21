@@ -44,19 +44,19 @@ function dra_commands {
     if [ -n "$1" ] && [ "$1" != " " ]; then
         debugme echo "Event: '$1' is defined and not empty"
         
-        dra_grunt_command="grunt --gruntfile=node_modules/grunt-idra2/idra.js -eventType=$1"
+        dra_grunt_command="grunt --gruntfile=node_modules/grunt-idra3/idra.js -tool=$1"
         
         debugme echo -e "\tdra_grunt_command: $dra_grunt_command"
         
         if [ -n "$2" ] && [ "$2" != " " ]; then
-            debugme echo -e "\tFile: '$2' is defined and not empty"
+            debugme echo -e "\ttestResult: '$2' is defined and not empty"
             
-            dra_grunt_command="$dra_grunt_command -file=$2"
+            dra_grunt_command="$dra_grunt_command -testResult=$2"
         
             debugme echo -e "\t\tdra_grunt_command: $dra_grunt_command"
             
         else
-            debugme echo -e "File: '$2' is not defined or is empty"
+            debugme echo -e "testResult: '$2' is not defined or is empty"
             debugme echo -e "${no_color}"
         fi
         #if [ -n "$3" ] && [ "$3" != " " ]; then
@@ -117,8 +117,22 @@ if [ $RESULT -eq 0 ]; then
     echo "**********************************************************************"
     echo -e "${no_color}"
     
-    export DRA_SERVER=`cat ${OUTPUT_FILE}`
+    #
+    # Retrieve variables from toolchain API
+    #
+    DRA_CHECK_OUTPUT=`cat ${OUTPUT_FILE}`
+    IFS=$'\n' read -rd '' -a dradataarray <<< "$DRA_CHECK_OUTPUT"
+    export CF_ORGANIZATION_ID=${dradataarray[0]}
+    export DRA_SERVER=${dradataarray[1]}
     rm ${OUTPUT_FILE}
+    
+    #
+    # Hardcoded until brokers are updated (DRA) and created (DLMS)
+    #
+    export DLMS_SERVER=http://devops-datastore.stage1.mybluemix.net
+    export DRA_SERVER=https://dra3.stage1.mybluemix.net
+    
+    npm install grunt-idra3
 
     debugme echo "DRA_SERVER: ${DRA_SERVER}"
 fi
@@ -131,7 +145,6 @@ fi
 
 npm install grunt
 npm install grunt-cli
-npm install grunt-idra2
 
 
 custom_cmd
@@ -167,11 +180,11 @@ if [ $RESULT -eq 0 ]; then
     if [ -n "${DRA_TEST_TOOL_SELECT}" ] && [ "${DRA_TEST_TOOL_SELECT}" != "none" ] && \
         [ -n "${DRA_TEST_LOG_FILE}" ] && [ "${DRA_TEST_LOG_FILE}" != " " ]; then
 
-        dra_commands "${DRA_TEST_TOOL_SELECT}FunctionalTest" "${DRA_TEST_LOG_FILE}"
+        dra_commands "${DRA_TEST_TOOL_SELECT}" "${DRA_TEST_LOG_FILE}"
 
         if [ -n "${DRA_MINIMUM_SUCCESS_RATE}" ] && [ "${DRA_MINIMUM_SUCCESS_RATE}" != " " ]; then
             name="At least ${DRA_MINIMUM_SUCCESS_RATE}% success in functional tests (${DRA_TEST_TOOL_SELECT})"
-            criteria="{ \"name\": \"$name\", \"conditions\": [ { \"eval\": \"_mochaTestSuccessPercentage\", \"op\": \">=\", \"value\": ${DRA_MINIMUM_SUCCESS_RATE}, \"forEventType\": \"${DRA_TEST_TOOL_SELECT}FunctionalTest\" } ] }"
+            criteria="{ \"name\": \"$name\", \"conditions\": [ { \"eval\": \"_mochaTestSuccessPercentage\", \"op\": \">=\", \"value\": ${DRA_MINIMUM_SUCCESS_RATE} } ] }"
 
     #        if [ "${DRA_TEST_TOOL_SELECT}" == "mochaKarma" ]; then
     #            criteria="{ \"name\": \"$name\", \"conditions\": [ { \"eval\": \"_karmaMochaTestSuccessPercentage\", \"op\": \">=\", \"value\": ${DRA_MINIMUM_SUCCESS_RATE} } ] }"
@@ -183,10 +196,10 @@ if [ $RESULT -eq 0 ]; then
 
         if [ -n "${DRA_CHECK_TEST_REGRESSION}" ] && [ "${DRA_CHECK_TEST_REGRESSION}" == "true" ]; then
             name="No regression in functional tests (${DRA_TEST_TOOL_SELECT})"
-            criteria="{ \"name\": \"$name\", \"conditions\": [ { \"eval\": \"_hasMochaTestRegressed\", \"op\": \"=\", \"value\": false, \"forEventType\": \"${DRA_TEST_TOOL_SELECT}FunctionalTest\" } ] }"
+            criteria="{ \"name\": \"$name\", \"conditions\": [ { \"eval\": \"_hasMochaTestRegressed\", \"op\": \"=\", \"value\": false } ] }"
 
             if [ "${DRA_TEST_TOOL_SELECT}" == "mochaKarma" ]; then
-                criteria="{ \"name\": \"$name\", \"conditions\": [ { \"eval\": \"_hasKarmaMochaTestRegressed\", \"op\": \"=\", \"value\": false, \"forEventType\": \"${DRA_TEST_TOOL_SELECT}FunctionalTest\" } ] }"
+                criteria="{ \"name\": \"$name\", \"conditions\": [ { \"eval\": \"_hasKarmaMochaTestRegressed\", \"op\": \"=\", \"value\": false } ] }"
             fi
 
             #echo "criteria:  $criteria"
@@ -195,7 +208,7 @@ if [ $RESULT -eq 0 ]; then
 
         if [ -n "${DRA_CRITICAL_TESTCASES}" ] && [ "${DRA_CRITICAL_TESTCASES}" != " " ]; then
             name="No critical functional test failures (${DRA_TEST_TOOL_SELECT})"
-            criteria="{ \"name\": \"$name\", \"conditions\": [ { \"eval\": \"_hasMochaCriticalTestsPassed(${DRA_CRITICAL_TESTCASES})\", \"op\": \"=\", \"value\": true, \"forEventType\": \"${DRA_TEST_TOOL_SELECT}FunctionalTest\" } ] }"
+            criteria="{ \"name\": \"$name\", \"conditions\": [ { \"eval\": \"_hasMochaCriticalTestsPassed(${DRA_CRITICAL_TESTCASES})\", \"op\": \"=\", \"value\": true } ] }"
 
             #echo "criteria:  $criteria"
             criteriaList=("${criteriaList[@]}" "$criteria")
@@ -220,7 +233,7 @@ if [ $RESULT -eq 0 ]; then
             mode="advisory"
         fi
         
-        criteria="{ \"name\": \"DynamicCriteria\", \"revision\": 2, \"project\": \"key\", \"mode\": \"$mode\", \"rules\": [ "
+        criteria="{ \"name\": \"DynamicCriteria\", \"mode\": \"$mode\", \"rules\": [ "
 
         for i in "${criteriaList[@]}"
         do
@@ -236,9 +249,13 @@ if [ $RESULT -eq 0 ]; then
 
         debugme echo "Dynamic Criteria:"
         debugme cat dynamicCriteria.json
+        debugme echo ""
+        debugme echo "CF_ORGANIZATION_ID: $CF_ORGANIZATION_ID"
+        debugme echo "PIPELINE_INITIAL_STAGE_EXECUTION_ID: $PIPELINE_INITIAL_STAGE_EXECUTION_ID"
+
 
         echo -e "${no_color}"
-        grunt --gruntfile=node_modules/grunt-idra2/idra.js -decision=dynamic -criteriafile=dynamicCriteria.json --no-color
+        grunt --gruntfile=node_modules/grunt-idra3/idra.js -decision=dynamic -criteriafile=dynamicCriteria.json --no-color
         DECISION_RESULT=$?
         echo -e "${no_color}"
         
