@@ -59,16 +59,19 @@ function dra_commands {
             debugme echo -e "testResult: '$2' is not defined or is empty"
             debugme echo -e "${no_color}"
         fi
-        #if [ -n "$3" ] && [ "$3" != " " ]; then
-        #    echo -e "\tServer: '$3' is defined and not empty"
-        #
-        #    dra_grunt_command="$dra_grunt_command -deployAnalyticsServer=$3"
-        #
-        #    echo -e "\t\tdra_grunt_command: $dra_grunt_command"
-        #
-        #else
-        #    echo -e "\tServer: '$3' is not defined or is empty"
-        #fi
+        
+        if [ -n "$3" ] && [ "$3" != " " ]; then
+            debugme echo -e "\tLife cycle stage: '$3' is defined and not empty"
+            
+            dra_grunt_command="$dra_grunt_command -stage=$3"
+        
+            debugme echo -e "\t\tdra_grunt_command: $dra_grunt_command"
+            
+        else
+            debugme echo -e "Life cycle stage: '$3' is not defined or is empty"
+            debugme echo -e "${no_color}"
+        fi
+        
         
         debugme echo -e "FINAL dra_grunt_command: $dra_grunt_command"
         debugme echo -e "${no_color}"
@@ -151,6 +154,7 @@ custom_cmd
 
 echo -e "${no_color}"
 
+debugme echo "DRA_LIFE_CYCLE_STAGE_SELECT: ${DRA_LIFE_CYCLE_STAGE_SELECT}"
 debugme echo "DRA_ADVISORY_MODE: ${DRA_ADVISORY_MODE}"
 debugme echo "DRA_TEST_TOOL_SELECT: ${DRA_TEST_TOOL_SELECT}"
 debugme echo "DRA_TEST_LOG_FILE: ${DRA_TEST_LOG_FILE}"
@@ -180,7 +184,7 @@ if [ $RESULT -eq 0 ]; then
     if [ -n "${DRA_TEST_TOOL_SELECT}" ] && [ "${DRA_TEST_TOOL_SELECT}" != "none" ] && \
         [ -n "${DRA_TEST_LOG_FILE}" ] && [ "${DRA_TEST_LOG_FILE}" != " " ]; then
 
-        dra_commands "${DRA_TEST_TOOL_SELECT}" "${DRA_TEST_LOG_FILE}"
+        dra_commands "${DRA_TEST_TOOL_SELECT}" "${DRA_TEST_LOG_FILE}" "${DRA_LIFE_CYCLE_STAGE_SELECT}"
 
         if [ -n "${DRA_MINIMUM_SUCCESS_RATE}" ] && [ "${DRA_MINIMUM_SUCCESS_RATE}" != " " ]; then
             name="At least ${DRA_MINIMUM_SUCCESS_RATE}% success in functional tests (${DRA_TEST_TOOL_SELECT})"
