@@ -27,7 +27,7 @@ export no_color='\e[0m' # No Color
 # Simple function to only run command if DEBUG=1 # 
 ### ###############################################
 debugme() {
-  [[ $DEBUG = 1 ]] && "$@" || :
+  [[ $EXTENSION_DEBUG = 1 ]] && "$@" || :
 }
 
 set +e
@@ -132,12 +132,12 @@ if [ $RESULT -eq 0 ]; then
     #
     # Hardcoded until brokers are updated (DRA) and created (DLMS)
     #
-    export DLMS_SERVER=http://devops-datastore.stage1.mybluemix.net
-    export DRA_SERVER=https://dra3.stage1.mybluemix.net
+    #export DLMS_SERVER=http://devops-datastore.stage1.mybluemix.net
+    #export DRA_SERVER=https://dra3.stage1.mybluemix.net
     
     npm install grunt-idra3
 
-    debugme echo "DRA_SERVER: ${DRA_SERVER}"
+    
 fi
 
 
@@ -154,6 +154,7 @@ custom_cmd
 
 echo -e "${no_color}"
 
+debugme echo "DRA_SERVER: ${DRA_SERVER}"
 debugme echo "DRA_LIFE_CYCLE_STAGE_SELECT: ${DRA_LIFE_CYCLE_STAGE_SELECT}"
 debugme echo "DRA_ADVISORY_MODE: ${DRA_ADVISORY_MODE}"
 debugme echo "DRA_TEST_TOOL_SELECT: ${DRA_TEST_TOOL_SELECT}"

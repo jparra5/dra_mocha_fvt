@@ -22,43 +22,43 @@
             "options": [
                 {
                     "label_key": "LIFE_CYCLE_STAGE_OPTION_1_KEY",
-                    "value": "CODE"
+                    "value": "code"
                 },
                 {
                     "label_key": "LIFE_CYCLE_STAGE_OPTION_2_KEY",
-                    "value": "UNITTEST"
+                    "value": "unittest"
                 },
                 { 
                     "label_key": "LIFE_CYCLE_STAGE_OPTION_3_KEY",
-                    "value": "SMOKETEST" 
+                    "value": "smoketest" 
                 },
                 { 
                     "label_key": "LIFE_CYCLE_STAGE_OPTION_4_KEY",
-                    "value": "FVT" 
+                    "value": "fvt" 
                 },
                 { 
                     "label_key": "LIFE_CYCLE_STAGE_OPTION_5_KEY",
-                    "value": "MONITORING" 
+                    "value": "monitoring" 
                 },
                 { 
                     "label_key": "LIFE_CYCLE_STAGE_OPTION_6_KEY",
-                    "value": "DEPLOY" 
+                    "value": "deploy" 
                 },
                 { 
                     "label_key": "LIFE_CYCLE_STAGE_OPTION_7_KEY",
-                    "value": "OTHERTEST" 
+                    "value": "othertest" 
                 },
                 { 
                     "label_key": "LIFE_CYCLE_STAGE_OPTION_8_KEY",
-                    "value": "CODESCAN" 
+                    "value": "codescan" 
                 },
                 { 
                     "label_key": "LIFE_CYCLE_STAGE_OPTION_9_KEY",
-                    "value": "LICENSESCAN" 
+                    "value": "licensescan" 
                 },
                 { 
                     "label_key": "LIFE_CYCLE_STAGE_OPTION_10_KEY",
-                    "value": "PERFTEST" 
+                    "value": "perftest" 
                 }
             ]
         },
