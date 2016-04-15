@@ -126,7 +126,7 @@ if [ $RESULT -eq 0 ]; then
     DRA_CHECK_OUTPUT=`cat ${OUTPUT_FILE}`
     IFS=$'\n' read -rd '' -a dradataarray <<< "$DRA_CHECK_OUTPUT"
     export CF_ORGANIZATION_ID=${dradataarray[0]}
-    export DRA_SERVER=${dradataarray[1]}
+    #export DRA_SERVER=${dradataarray[1]}
     rm ${OUTPUT_FILE}
     
     #
