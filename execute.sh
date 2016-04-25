@@ -189,10 +189,10 @@ if [ $RESULT -eq 0 ]; then
 
         if [ -n "${DRA_MINIMUM_SUCCESS_RATE}" ] && [ "${DRA_MINIMUM_SUCCESS_RATE}" != " " ]; then
             name="At least ${DRA_MINIMUM_SUCCESS_RATE}% success in functional tests (${DRA_TEST_TOOL_SELECT})"
-            criteria="{ \"name\": \"$name\", \"conditions\": [ { \"eval\": \"_mochaTestSuccessPercentage\", \"op\": \">=\", \"value\": ${DRA_MINIMUM_SUCCESS_RATE} } ] }"
+            criteria="{ \"name\": \"$name\", \"conditions\": [ { \"eval\": \"_mochaTestSuccessPercentage\", \"op\": \">=\", \"value\": ${DRA_MINIMUM_SUCCESS_RATE}, \"forTool\": \"${DRA_TEST_TOOL_SELECT}\", \"forStage\": \"${DRA_LIFE_CYCLE_STAGE_SELECT}\" } ] }"
 
     #        if [ "${DRA_TEST_TOOL_SELECT}" == "mochaKarma" ]; then
-    #            criteria="{ \"name\": \"$name\", \"conditions\": [ { \"eval\": \"_karmaMochaTestSuccessPercentage\", \"op\": \">=\", \"value\": ${DRA_MINIMUM_SUCCESS_RATE} } ] }"
+    #            criteria="{ \"name\": \"$name\", \"conditions\": [ { \"eval\": \"_karmaMochaTestSuccessPercentage\", \"op\": \">=\", \"value\": ${DRA_MINIMUM_SUCCESS_RATE}, \"forTool\": \"${DRA_TEST_TOOL_SELECT}\", \"forStage\": \"${DRA_LIFE_CYCLE_STAGE_SELECT}\" } ] }"
     #        fi
 
             #echo "criteria:  $criteria"
@@ -201,10 +201,10 @@ if [ $RESULT -eq 0 ]; then
 
         if [ -n "${DRA_CHECK_TEST_REGRESSION}" ] && [ "${DRA_CHECK_TEST_REGRESSION}" == "true" ]; then
             name="No regression in functional tests (${DRA_TEST_TOOL_SELECT})"
-            criteria="{ \"name\": \"$name\", \"conditions\": [ { \"eval\": \"_hasMochaTestRegressed\", \"op\": \"=\", \"value\": false } ] }"
+            criteria="{ \"name\": \"$name\", \"conditions\": [ { \"eval\": \"_hasMochaTestRegressed\", \"op\": \"=\", \"value\": false, \"forTool\": \"${DRA_TEST_TOOL_SELECT}\", \"forStage\": \"${DRA_LIFE_CYCLE_STAGE_SELECT}\" } ] }"
 
             if [ "${DRA_TEST_TOOL_SELECT}" == "mochaKarma" ]; then
-                criteria="{ \"name\": \"$name\", \"conditions\": [ { \"eval\": \"_hasKarmaMochaTestRegressed\", \"op\": \"=\", \"value\": false } ] }"
+                criteria="{ \"name\": \"$name\", \"conditions\": [ { \"eval\": \"_hasKarmaMochaTestRegressed\", \"op\": \"=\", \"value\": false, \"forTool\": \"${DRA_TEST_TOOL_SELECT}\", \"forStage\": \"${DRA_LIFE_CYCLE_STAGE_SELECT}\" } ] }"
             fi
 
             #echo "criteria:  $criteria"
@@ -213,7 +213,7 @@ if [ $RESULT -eq 0 ]; then
 
         if [ -n "${DRA_CRITICAL_TESTCASES}" ] && [ "${DRA_CRITICAL_TESTCASES}" != " " ]; then
             name="No critical functional test failures (${DRA_TEST_TOOL_SELECT})"
-            criteria="{ \"name\": \"$name\", \"conditions\": [ { \"eval\": \"_hasMochaCriticalTestsPassed(${DRA_CRITICAL_TESTCASES})\", \"op\": \"=\", \"value\": true } ] }"
+            criteria="{ \"name\": \"$name\", \"conditions\": [ { \"eval\": \"_hasMochaCriticalTestsPassed(${DRA_CRITICAL_TESTCASES})\", \"op\": \"=\", \"value\": true, \"forTool\": \"${DRA_TEST_TOOL_SELECT}\", \"forStage\": \"${DRA_LIFE_CYCLE_STAGE_SELECT}\" } ] }"
 
             #echo "criteria:  $criteria"
             criteriaList=("${criteriaList[@]}" "$criteria")
